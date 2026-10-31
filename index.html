@@ -416,7 +416,8 @@ const DATA = {
       cuerpo:[
         ['Autores', 'Cristopher Palma Espinoza, Luis Viveros Bello, Ariadna Rocha Vásquez y Mauricio Chandía Cabas.'],
         ['Presentación', 'Trabajo certificado por la Sociedad Chilena de Hematología.']
-      ]},
+      ],
+      enlaces:[['Certificado de SOCHIHEM','https://sochihem.cl/certificados/verificar.php?tipo=certificado-personalizado&id=5671']] },
     { lente:['lab'], abierto:false, titulo:'Concordancia en la medición de la ploidía de ADN por citometría de flujo con tres métodos de laboratorio en pacientes con mieloma múltiple',
       meta:['Póster, XXIV Congreso de Hematología y XIV de Medicina Transfusional', 'Concepción, 15 al 18 de octubre de 2025'],
       cuerpo:[
@@ -424,7 +425,16 @@ const DATA = {
         ['Objetivo', 'Comparar dos métodos propios del laboratorio con el estándar de referencia (kit Cytognos Cycloscope) para medir ploidía y fase S en mieloma múltiple.'],
         ['Resultados', 'Con 9 pacientes, la clasificación de ploidía mostró concordancia considerable (kappa 0,696). El índice de ADN tuvo concordancia moderada (ICC 0,429) y la clasificación por fase S mayor a 2 % mostró discordancia severa (kappa −0,167).'],
         ['Conclusión', 'El método propio permite medir ploidía en la práctica clínica; para la fase S se recomienda seguir usando el estándar de referencia.']
-      ]}
+      ],
+      enlaces:[['Certificado de SOCHIHEM','https://sochihem.cl/certificados/verificar.php?tipo=certificado-personalizado&id=5670']] },
+    { lente:['lab'], titulo:'Frequency of Human Papilloma Virus (HPV) and p16 expression in patients with head and neck squamous cell carcinoma (HNSCC) in Concepcion, Chile',
+      meta:['Póster, 16th International Congress on Infectious Diseases, 2014', 'Publicado el 29 de mayo de 2014 (F1000Posters 2014, 5:417)'],
+      cuerpo:[
+        ['Autores', 'S. Montenegro, C. Delgado, T. De la Barra, S. Pineda, C. Reyes, P. Villalobos, C. Palma y F. Mucientes.'],
+        ['Institución', 'Laboratorio de Diagnóstico Clínico Molecular, Universidad de Concepción, Facultad de Medicina, Chile.'],
+        ['Tipo', 'Póster no revisado por pares. El resumen se publicó en el International Journal of Infectious Diseases, vol. 21, suplemento 1, p. 318 (abril de 2014).']
+      ],
+      enlaces:[['DOI del resumen','https://doi.org/10.1016/j.ijid.2014.03.1078'],['Póster en F1000Research','https://f1000research.com/posters/1095351']] }
   ],
   formacion: [
     ['2024', 'Diplomado en Diseño y Programación Web', 'AIEP'],
@@ -674,7 +684,8 @@ function renderPublicaciones(){
   DATA.publicaciones.forEach(p => {
     $('#pub').append(conLente(p.lente, acordeon({
       titulo:p.titulo, lineas:p.meta, abierto:p.abierto,
-      cuerpo:p.cuerpo.map(([k, v]) => h('p', null, h('span', {class:'k'}, k + '. '), v))
+      cuerpo:[...p.cuerpo.map(([k, v]) => h('p', null, h('span', {class:'k'}, k + '. '), v)),
+        p.enlaces && h('p', {class:'acts'}, p.enlaces.map(([x, u]) => h('a', {class:'lk', href:u, target:'_blank', rel:'noopener'}, x, h('span', {class:'sr'}, ' (se abre en una pestaña nueva)'))))]
     })));
   });
 }
