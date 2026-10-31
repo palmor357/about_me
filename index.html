@@ -396,6 +396,10 @@ const DATA = {
       desc:'Estima cuándo se agotará cada reactivo a partir de los avisos de recepción y consumo, y crea alertas en el calendario.',
       detalle:'Lee los avisos de recepción y de agotamiento de reactivos, extrae el volumen, el consumo y el tiempo estimado de cada insumo, y proyecta la fecha en que se acabará. Con eso crea alertas en Google Calendar mediante su API, o genera un archivo ICS para importarlo directamente.',
       techs:['Python','Google Calendar API','iCalendar','pandas'] },
+    { nombre:'Identificador y conteo celular con cámara', cats:['datos','web'], motivo:'deteccion',
+      desc:'Aplicación que detecta glóbulos rojos, glóbulos blancos y plaquetas en el microscopio y subclasifica los glóbulos blancos.',
+      detalle:'Aplicación de Streamlit que analiza el video de una cámara USB o una imagen subida. Un detector DETR ResNet-50, ajustado con el dataset público BCCD, localiza glóbulos rojos, glóbulos blancos y plaquetas, y una ResNet50 distingue cinco subtipos de glóbulos blancos. Permite ajustar umbrales por tipo, filtros de tamaño y supresión de duplicados, comparar con anotaciones de referencia, exportar las detecciones a CSV y corregirlas para generar nuevas etiquetas de entrenamiento. Es un prototipo de investigación y docencia, sin validación clínica, y no reemplaza un hemograma ni un recuento diferencial manual.',
+      techs:['PyTorch','DETR','ResNet50','Streamlit','OpenCV'] },
     { nombre:'INFINI-TWO', cats:['datos'], motivo:'red', url:'https://palmor357.github.io/INFINI-TWO/',
       desc:'Sistema de aprendizaje automático multimodal para apoyo al diagnóstico de leucemias.',
       detalle:'Sistema multimodal de aprendizaje automático que apoya el diagnóstico de leucemias. Tiene una demo pública en línea.',
@@ -681,6 +685,14 @@ function miniatura(tipo){
       g += '<circle class="pt ' + (k < .7 ? 'f-b' : k < .9 ? 'f-a' : 'f-i') + '" opacity="' + (k < .7 ? '.45' : '.8') + '" cx="' + f(x) + '" cy="' + f(y) + '" r="' + (k < .7 ? 4.5 : 3.4) + '"/>'; }
     g += '<rect class="c-a" fill-opacity=".08" stroke-width="2" x="150" y="66" width="86" height="58" rx="3"/>';
     g += '<line stroke="var(--ink)" stroke-width="2" x1="48" y1="168" x2="98" y2="168"/><line stroke="var(--ink)" stroke-width="2" x1="48" y1="164" x2="48" y2="172"/><line stroke="var(--ink)" stroke-width="2" x1="98" y1="164" x2="98" y2="172"/>';
+  } else if(tipo === 'deteccion'){
+    g += '<rect class="f-b" opacity=".08" x="20" y="16" width="280" height="168" rx="6"/>';
+    const pos = [];
+    for(let i = 0; i < 17; i++){ const x = 40 + r() * 240, y = 32 + r() * 136; if(pos.some(q => Math.hypot(q[0] - x, q[1] - y) < 34)) continue; pos.push([x, y]);
+      g += '<circle class="f-b" opacity=".35" cx="' + f(x) + '" cy="' + f(y) + '" r="13"/><rect class="s-i" style="stroke:var(--acc);opacity:.85" x="' + f(x - 15) + '" y="' + f(y - 15) + '" width="30" height="30" rx="2"/>'; }
+    g += '<circle class="f-a" opacity=".85" cx="172" cy="104" r="22"/><circle class="f-i" opacity=".6" cx="168" cy="100" r="10"/><rect fill="none" stroke="var(--acc2)" stroke-width="2.4" x="146" y="78" width="52" height="52" rx="3"/>';
+    g += '<rect class="f-a" x="146" y="64" width="44" height="12" rx="2"/>';
+    [[84,150],[238,52]].forEach(([x, y]) => { g += '<circle class="f-i" opacity=".6" cx="' + x + '" cy="' + y + '" r="3"/><rect fill="none" stroke="var(--ink)" stroke-width="1.6" x="' + (x - 7) + '" y="' + (y - 7) + '" width="14" height="14"/>'; });
   } else if(tipo === 'video'){
     g += '<circle class="ring" cx="160" cy="100" r="48"/><circle class="ring" cx="160" cy="100" r="68"/>';
     g += '<rect class="s-i" x="120" y="14" width="80" height="172" rx="12"/>';
