@@ -368,9 +368,9 @@ const DATA = {
       desc:'Sistema de aprendizaje automático multimodal para apoyo al diagnóstico de leucemias.',
       detalle:'Sistema multimodal de aprendizaje automático que apoya el diagnóstico de leucemias. Tiene una demo pública en línea.',
       techs:['Aprendizaje automático','Citometría de flujo'] },
-    { nombre:'baterIA', cats:['datos','web'], motivo:'tubos',
+    { nombre:'baterIA', cats:['datos','web'], motivo:'tubos', url:'https://claude.ai/artifact/WWvCkprMDUq2uSmBH5AofM',
       desc:'Demo que propone una identificación presuntiva de enterobacterias a partir de una foto de la serie bioquímica.',
-      detalle:'Demo en HTML que, a partir de una foto de la serie bioquímica, propone una identificación presuntiva de enterobacterias. Es una orientación, no un diagnóstico.',
+      detalle:'Demo de concepto en HTML que, a partir de una foto de la serie bioquímica, propone una identificación presuntiva de enterobacterias. Es una orientación, no un diagnóstico.',
       techs:['HTML','CSS','JavaScript'] },
     { nombre:'Diseñador de paneles', cats:['web'], motivo:'curvas',
       desc:'Herramienta para diseñar paneles de anticuerpos de citometría de flujo.',
@@ -388,7 +388,27 @@ const DATA = {
       extra:[['TikTok','https://www.tiktok.com/@leucococitas'],['YouTube','https://www.youtube.com/@leucococitas9027/videos']],
       desc:'Divulgación de hematología y citometría en Instagram, TikTok y YouTube.',
       detalle:'Contenido educativo de hematología y citometría para redes sociales. Incluye animaciones interactivas hechas en HTML, como un simulador 3D de citómetro, y un estudio propio para convertirlas en video.',
-      techs:['Animación','Video','Educación'] }
+      techs:['Animación','Video','Educación'] },
+    { nombre:'Simulador de citómetro 3D', cats:['divulgacion','web'], motivo:'laser', url:'https://claude.ai/artifact/TcePxXwjQB1JEWEETKFQHS',
+      desc:'Simulador interactivo que muestra en 3D cómo un citómetro de flujo lee las células.',
+      detalle:'Esquema isométrico del recorrido óptico del citómetro, con láser, gráfico FSC contra SSC y señal en los detectores en tiempo real. Permite pausar, reiniciar y exportar la simulación a video WebM.',
+      techs:['JavaScript','Chart.js','Canvas'] },
+    { nombre:'Usos de la citometría', cats:['divulgacion','diseno'], motivo:'burbujas', url:'https://claude.ai/artifact/3pCuWTQCx1pqb4pnr1T12g',
+      desc:'Animación en canvas sobre para qué se usa la citometría de flujo.',
+      detalle:'Animación pensada como contenido para redes de @leucococitas, dibujada en canvas con la paleta de la cuenta.',
+      techs:['Canvas','Animación','Video'] },
+    { nombre:'Registro de biopsias e IHQ', cats:['web'], motivo:'form', url:'https://claude.ai/artifact/WLGPYwDPaK3x79TqL5EkdP',
+      desc:'Registro de biopsias y anticuerpos de inmunohistoquímica con búsqueda por caso.',
+      detalle:'Ingreso, búsqueda y edición del historial de tinciones por caso: se completan los datos de la biopsia una vez y se agregan los anticuerpos solicitados, cada uno como una fila del histórico.',
+      techs:['HTML','CSS','JavaScript'] },
+    { nombre:'Mockup LIMS multicéntrico', cats:['diseno','web'], motivo:'slides', url:'https://claude.ai/artifact/5DWryWBmpkYJwmwRhcW2Lj#play-15dd8cd198dd',
+      desc:'Maqueta de un LIMS pensado para operar en varios centros.',
+      detalle:'Presentación navegable con el diseño de un LIMS multicéntrico, para mostrar el flujo y las pantallas antes de construirlo.',
+      techs:['Diseño de interfaz','LIMS','Prototipo'] },
+    { nombre:'Identificador de rocas', cats:['datos','web'], motivo:'roca', url:'https://claude.ai/artifact/WgGVr97CMNEG1kygCixkEb',
+      desc:'Sube una foto de una roca y propone qué es, de qué está hecha y cómo confirmarlo en terreno.',
+      detalle:'Proyecto personal fuera del laboratorio. Analiza una foto de la roca, guarda una colección filtrable por tipo (ígneas, sedimentarias, metamórficas) y funciona abierto desde Claude.',
+      techs:['Análisis de imágenes','HTML','JavaScript'] }
   ],
   publicaciones: [
     { lente:['lab'], titulo:'Comparación de rendimiento de 3 metodologías para obtención de células T a partir de muestras de piel para estudio por citometría de flujo',
@@ -543,6 +563,33 @@ function miniatura(tipo){
       g += '<rect class="f-i" opacity=".4" x="' + (34 + c * 93) + '" y="' + f(y + 12) + '" width="' + f(30 + r() * 30) + '" height="5" rx="2.5"/>';
       if(r() > .5) g += '<circle class="f-b" cx="' + (70 + c * 93) + '" cy="' + f(y + hh - 12) + '" r="4"/>';
       y += hh + 10; } }
+  } else if(tipo === 'laser'){
+    g += '<rect class="f-i" opacity=".35" x="20" y="96" width="120" height="8" rx="4"/><rect class="f-b" x="20" y="98" width="120" height="4" rx="2"/>';
+    g += '<circle class="f-a fl" cx="160" cy="100" r="15"/><circle class="f-i" opacity=".4" cx="160" cy="100" r="6"/>';
+    [[-70,.8],[-35,.6],[0,.9],[40,.55],[75,.7]].forEach(([a, l]) => {
+      const x2 = 160 + Math.cos(a * Math.PI / 180) * 130 * l, y2 = 100 + Math.sin(a * Math.PI / 180) * 130 * l;
+      g += '<line stroke="var(--acc2)" stroke-width="2" stroke-linecap="round" x1="180" y1="100" x2="' + f(x2 + 20) + '" y2="' + f(y2) + '" opacity=".7"/>'; });
+    g += '<path class="s-i" d="M24 176H296"/>';
+  } else if(tipo === 'burbujas'){
+    [[70,110,40,'c-a'],[150,70,28,'c-b'],[210,130,46,'c-i'],[262,58,20,'c-a'],[120,160,16,'c-b'],[40,50,14,'c-i']].forEach(([x, y, rr, c]) => {
+      g += '<circle class="fl ' + c + '" fill-opacity=".22" stroke-width="1.5" cx="' + x + '" cy="' + y + '" r="' + rr + '"/>'; });
+    for(let i = 0; i < 26; i++) g += '<circle class="pt f-i" opacity=".5" cx="' + f(20 + r() * 280) + '" cy="' + f(20 + r() * 160) + '" r="1.6"/>';
+  } else if(tipo === 'form'){
+    for(let i = 0; i < 4; i++){ const y = 26 + i * 40;
+      g += '<rect class="f-i" opacity=".4" x="30" y="' + y + '" width="' + f(40 + r() * 30) + '" height="5" rx="2.5"/>';
+      g += '<rect class="s-i" x="30" y="' + (y + 11) + '" width="' + (i === 1 ? 126 : 260) + '" height="18" rx="4"/>';
+      if(i === 1) g += '<rect class="s-i" x="164" y="' + (y + 11) + '" width="126" height="18" rx="4"/>'; }
+    g += '<rect class="f-a fl" x="214" y="166" width="76" height="20" rx="10"/>';
+  } else if(tipo === 'slides'){
+    g += '<rect class="s-i" x="62" y="40" width="200" height="124" rx="6"/><rect class="s-i" x="42" y="26" width="200" height="124" rx="6"/>';
+    g += '<rect class="fl" fill="var(--bg)" stroke="var(--ink)" stroke-opacity=".5" stroke-width="1.5" x="22" y="12" width="200" height="124" rx="6"/>';
+    g += '<rect class="f-a" x="36" y="26" width="86" height="10" rx="3"/><rect class="f-i" opacity=".3" x="36" y="48" width="160" height="5" rx="2.5"/><rect class="f-i" opacity=".3" x="36" y="60" width="130" height="5" rx="2.5"/>';
+    g += '<rect class="f-b" x="36" y="84" width="54" height="38" rx="4"/><rect class="f-a" opacity=".5" x="98" y="84" width="54" height="38" rx="4"/>';
+    g += '<path class="f-b" d="M250 150l30 18-30 18z" opacity=".9"/>';
+  } else if(tipo === 'roca'){
+    g += '<path class="f-i" opacity=".22" d="M44 140l36-62 52-26 60 16 48 44-22 44-70 12z"/>';
+    g += '<path class="f-a fl" opacity=".75" d="M80 78l52-26 18 54-70 34z"/><path class="f-b" opacity=".7" d="M132 52l60 16-42 38z"/>';
+    g += '<path class="f-i" opacity=".5" d="M192 68l48 44-90-6z"/><path class="s-i" d="M44 140l36-62 52-26 60 16 48 44-22 44-70 12z"/>';
   } else if(tipo === 'video'){
     g += '<circle class="ring" cx="160" cy="100" r="48"/><circle class="ring" cx="160" cy="100" r="68"/>';
     g += '<rect class="s-i" x="120" y="14" width="80" height="172" rx="12"/>';
