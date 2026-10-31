@@ -364,10 +364,38 @@ const DATA = {
       desc:'Sistema web del laboratorio de citometría: informes clínicos, trazabilidad de láminas e interoperabilidad con el FACSCanto II.',
       detalle:'Aplicación interna del laboratorio. Reúne la emisión de informes clínicos, la trazabilidad de láminas (con bandejas y préstamos a hematólogos) y la generación de archivos XML de FACSDiva por paciente para el FACSCanto II.',
       techs:['PHP','MySQL','JavaScript'] },
+    { nombre:'Sistema de certificados digitales', cats:['web'], motivo:'certificado', url:'https://econtinuamed.cl/certificados/certificar.php',
+      desc:'Plataforma de educación continua para buscar certificados por RUT o DNI, con PDF, código QR y validación pública.',
+      detalle:'Plataforma web para emitir y verificar certificados de cursos y eventos. Cada participante busca su certificado con RUT o DNI y descarga un PDF con la plantilla del curso, un código QR y un código validador. Cualquiera puede comprobar su autenticidad con el ID del participante y ese código. Quienes administran gestionan cursos y eventos, plantillas de fondo, cargas masivas de asistentes desde Excel y respaldos. Los eventos incluyen campos como organizado por y realizado en.',
+      techs:['PHP','MySQL','JavaScript','Generación de PDF','Código QR'] },
+    { nombre:'Visor de láminas digitales', cats:['web','datos'], motivo:'lamina', url:'https://claude.ai/artifact/UuCFR4EofnFY9SkKfU94f5', etiqueta:'Abrir el visor',
+      desc:'Visor tipo láminas virtuales con zoom con escala, regla, marcadores y ajustes de imagen, con una lámina sintética de demostración.',
+      detalle:'Visor de láminas digitales hecho con OpenSeadragon. Tiene zoom con aumento y barra de escala en micras, regla para medir, marcadores con lista de anotaciones, rotación, minimapa y ajustes de brillo, contraste y saturación. La demostración usa láminas sintéticas que se dibujan por código mientras navegas, así que no contiene imágenes de pacientes ni de terceros. El mismo visor tiene una versión local que lee las teselas desde el computador del usuario, sin subirlas a ningún servidor.',
+      techs:['JavaScript','OpenSeadragon','Canvas','SVG'] },
     { nombre:'Medipath LIMS', cats:['web','diseno'], motivo:'tabla',
       desc:'Sistema LIMS y ERP para laboratorios de anatomía patológica, con identidad de marca propia.',
       detalle:'Antes llamado PatoFlow. Gestiona el flujo de muestras de anatomía patológica y tiene una identidad visual propia, con logo y paleta de color.',
       techs:['LIMS','ERP','Identidad visual'] },
+    { nombre:'RetinaScan', cats:['datos'], motivo:'ojo', url:'https://claude.ai/artifact/9jkgNkGBYawwAPyKHcSwDZ', etiqueta:'Ver explicación',
+      desc:'Prototipo de pipeline multimodal que analiza fotos de fondo de ojo para clasificar masa, edema y atrofia, con datos clínicos opcionales.',
+      detalle:'Prototipo de investigación en PyTorch, todavía en desarrollo y sin resultados validados. Controla la calidad de las imágenes, localiza la región del disco óptico y la mácula, y entrena un modelo con tres salidas (masa, edema y atrofia) por etapas. Puede fusionar variables clínicas con un MLP o con XGBoost, e incluye métricas de calibración, mapas de explicabilidad y una interfaz para corregir etiquetas. No es un dispositivo médico.',
+      techs:['PyTorch','EfficientNetV2','XGBoost','Explicabilidad (Grad-CAM y SHAP)'] },
+    { nombre:'Clasificador de leucemia multimodal', cats:['datos','web'], motivo:'arbol',
+      desc:'Aplicación web que transforma archivos de citometría de flujo en tres imágenes y las analiza con una red neuronal de tres ramas.',
+      detalle:'Prototipo de 2025 en Django y PyTorch. Se sube un archivo .fcs y el sistema genera tres representaciones visuales: un mapa de densidad t-SNE, un gráfico de dispersión t-SNE y un análisis de conectividad entre poblaciones al estilo SPADE (PhenoGraph y árbol de expansión mínima). Cada una alimenta una rama de la red, y sus resultados se combinan en la clasificación del subtipo, con la clase y la confianza del modelo. Incluye el pipeline de preprocesamiento, el entrenamiento con balance de clases y los scripts de evaluación. Es un prototipo de investigación, sin validación clínica.',
+      techs:['Django','PyTorch','scikit-learn','PhenoGraph','t-SNE'] },
+    { nombre:'Análisis de reportes CST del citómetro', cats:['datos'], motivo:'cst',
+      desc:'Lee los reportes en PDF del seguimiento del citómetro, detecta fallas y tendencias y genera gráficos e informes.',
+      detalle:'Cuaderno de Python que procesa lotes de reportes en PDF del seguimiento y ajuste del citómetro (CST). Extrae los datos base de cada lote, el rendimiento (CV, PMT y láseres) y la fluídica, analiza las fallas y las tendencias en el tiempo, y genera visualizaciones y un informe en PDF.',
+      techs:['Python','pdfplumber','pandas','matplotlib','ReportLab'] },
+    { nombre:'Reportes estadísticos del laboratorio', cats:['datos'], motivo:'informe',
+      desc:'Depura los registros de estudios del laboratorio, calcula tiempos de ejecución y genera reportes con gráficos en PDF.',
+      detalle:'Cuaderno de Python que normaliza los registros de estudios (centros, servicios, paneles y fechas), clasifica el tipo de estudio, determina qué procesos llevaron lavado, calcula los tiempos de ejecución y genera gráficos y reportes en PDF para la gestión del laboratorio. Trabaja con datos agregados, y la versión pública no incluye datos de pacientes.',
+      techs:['Python','pandas','seaborn','FPDF'] },
+    { nombre:'Predicción de agotamiento de insumos', cats:['datos'], motivo:'calendario',
+      desc:'Estima cuándo se agotará cada reactivo a partir de los avisos de recepción y consumo, y crea alertas en el calendario.',
+      detalle:'Lee los avisos de recepción y de agotamiento de reactivos, extrae el volumen, el consumo y el tiempo estimado de cada insumo, y proyecta la fecha en que se acabará. Con eso crea alertas en Google Calendar mediante su API, o genera un archivo ICS para importarlo directamente.',
+      techs:['Python','Google Calendar API','iCalendar','pandas'] },
     { nombre:'INFINI-TWO', cats:['datos'], motivo:'red', url:'https://palmor357.github.io/INFINI-TWO/',
       desc:'Sistema de aprendizaje automático multimodal para apoyo al diagnóstico de leucemias.',
       detalle:'Sistema multimodal de aprendizaje automático que apoya el diagnóstico de leucemias. Tiene una demo pública en línea.',
@@ -604,6 +632,55 @@ function miniatura(tipo){
     g += '<path class="f-i" opacity=".22" d="M44 140l36-62 52-26 60 16 48 44-22 44-70 12z"/>';
     g += '<path class="f-a fl" opacity=".75" d="M80 78l52-26 18 54-70 34z"/><path class="f-b" opacity=".7" d="M132 52l60 16-42 38z"/>';
     g += '<path class="f-i" opacity=".5" d="M192 68l48 44-90-6z"/><path class="s-i" d="M44 140l36-62 52-26 60 16 48 44-22 44-70 12z"/>';
+  } else if(tipo === 'certificado'){
+    g += '<rect class="s-i" x="78" y="14" width="164" height="172" rx="4"/>';
+    g += '<rect class="f-a" x="100" y="34" width="120" height="8" rx="4"/>';
+    g += '<rect class="f-i" opacity=".5" x="116" y="56" width="88" height="6" rx="3"/><rect class="f-i" opacity=".3" x="104" y="72" width="112" height="5" rx="2.5"/><rect class="f-i" opacity=".3" x="112" y="84" width="96" height="5" rx="2.5"/>';
+    g += '<circle class="fl c-b" fill-opacity=".25" stroke-width="1.5" cx="160" cy="116" r="15"/><path class="f-b" d="M153 128l-4 18 11-6 11 6-4-18z" opacity=".85"/>';
+    for(let i = 0; i < 6; i++) for(let j = 0; j < 6; j++) if(r() > .45) g += '<rect class="f-i" x="' + (180 + i * 6) + '" y="' + (150 + j * 5) + '" width="4.5" height="4" opacity=".8"/>';
+    g += '<rect class="f-i" opacity=".3" x="96" y="160" width="62" height="4" rx="2"/><rect class="f-i" opacity=".3" x="96" y="170" width="46" height="4" rx="2"/>';
+  } else if(tipo === 'ojo'){
+    g += '<path class="s-i" d="M30 100C70 44 250 44 290 100C250 156 70 156 30 100Z"/>';
+    g += '<circle class="c-a fl" fill-opacity=".18" stroke-width="1.5" cx="160" cy="100" r="42"/>';
+    g += '<circle class="f-a" opacity=".75" cx="160" cy="100" r="22"/><circle class="f-i" opacity=".7" cx="160" cy="100" r="10"/><circle fill="#fff" opacity=".9" cx="152" cy="92" r="3.5"/>';
+    g += '<path class="pt" fill="none" stroke="var(--acc2)" stroke-width="1.6" stroke-linecap="round" opacity=".7" d="M186 96C206 88 222 82 240 78M186 104C206 112 224 120 242 124"/>';
+    g += '<path fill="none" stroke="var(--ink)" stroke-width="1.4" stroke-linecap="round" opacity=".3" d="M20 100h-6M300 100h6"/>';
+  } else if(tipo === 'arbol'){
+    const cl = [[70,70],[150,50],[240,80],[110,140],[210,150],[270,140]];
+    const ed = [[0,1],[1,2],[0,3],[3,4],[2,4],[4,5]];
+    ed.forEach(([a, b]) => { g += '<line stroke="var(--ink)" stroke-opacity=".32" stroke-width="1.6" x1="' + cl[a][0] + '" y1="' + cl[a][1] + '" x2="' + cl[b][0] + '" y2="' + cl[b][1] + '"/>'; });
+    cl.forEach(([x, y], k) => {
+      g += '<circle class="fl ' + ['c-a','c-b','c-i'][k % 3] + '" fill-opacity=".25" stroke-width="1.5" cx="' + x + '" cy="' + y + '" r="' + (14 + (k % 3) * 4) + '"/>';
+      for(let i = 0; i < 9; i++) g += '<circle class="pt ' + ['f-a','f-b','f-i'][k % 3] + '" cx="' + f(x + (r() - .5) * 22) + '" cy="' + f(y + (r() - .5) * 22) + '" r="1.7"/>';
+    });
+  } else if(tipo === 'cst'){
+    g += '<path class="s-i" d="M24 20V176H300"/>';
+    g += '<rect class="f-b" opacity=".12" x="26" y="60" width="272" height="70"/>';
+    g += '<line stroke="var(--acc2)" stroke-dasharray="4 4" stroke-width="1.3" x1="26" y1="60" x2="298" y2="60"/><line stroke="var(--acc2)" stroke-dasharray="4 4" stroke-width="1.3" x1="26" y1="130" x2="298" y2="130"/>';
+    let d = '', yy = 96;
+    for(let i = 0; i < 14; i++){ yy = clampY(yy + (r() - .5) * 26 + (i > 9 ? -9 : 0)); const x = 36 + i * 19.5; d += (i ? 'L' : 'M') + x + ' ' + f(yy);
+      g += '<circle class="pt ' + ((yy < 60 || yy > 130) ? 'f-b' : 'f-a') + '" cx="' + x + '" cy="' + f(yy) + '" r="3.4"/>'; }
+    g += '<path fill="none" stroke="var(--acc)" stroke-width="1.6" opacity=".7" d="' + d + '"/>';
+    function clampY(v){ return Math.min(166, Math.max(30, v)); }
+  } else if(tipo === 'informe'){
+    g += '<rect class="s-i" x="64" y="14" width="150" height="172" rx="4"/>';
+    g += '<rect class="f-a" x="80" y="30" width="80" height="8" rx="4"/>';
+    [[84,40],[110,64],[136,30],[162,54]].forEach(([x, h], k) => { g += '<rect class="fl ' + ['f-a','f-b','f-i'][k % 3] + '" opacity=".75" x="' + (80 + k * 28) + '" y="' + (150 - h) + '" width="18" height="' + h + '" rx="2"/>'; });
+    g += '<line stroke="var(--ink)" opacity=".3" x1="78" y1="152" x2="200" y2="152"/>';
+    g += '<rect class="f-i" opacity=".3" x="80" y="164" width="100" height="4" rx="2"/>';
+    g += '<circle class="c-b" fill-opacity=".2" stroke-width="1.5" cx="250" cy="70" r="30"/><path class="f-b" opacity=".85" d="M250 70L250 40A30 30 0 0 1 276 85Z"/>';
+    g += '<rect class="f-i" opacity=".3" x="226" y="118" width="56" height="5" rx="2.5"/><rect class="f-i" opacity=".3" x="226" y="130" width="40" height="5" rx="2.5"/>';
+  } else if(tipo === 'calendario'){
+    g += '<rect class="s-i" x="50" y="26" width="220" height="150" rx="6"/><rect class="f-a" x="50" y="26" width="220" height="30" rx="6"/>';
+    for(let i = 0; i < 7; i++) for(let j = 0; j < 4; j++){ const x = 66 + i * 29, y = 70 + j * 25, k = i + j * 7;
+      g += '<rect class="' + (k === 17 ? 'f-b fl' : k > 17 && k < 21 ? 'f-b' : 'f-i') + '" ' + (k === 17 ? '' : k > 17 && k < 21 ? 'opacity=".25" ' : 'opacity=".12" ') + 'x="' + x + '" y="' + y + '" width="22" height="18" rx="3"/>'; }
+    g += '<circle fill="#fff" cx="' + (66 + 3 * 29 + 11) + '" cy="' + (70 + 2 * 25 + 9) + '" r="3"/>';
+  } else if(tipo === 'lamina'){
+    g += '<rect class="s-i" x="36" y="22" width="248" height="156" rx="6"/>';
+    for(let i = 0; i < 70; i++){ const x = 48 + r() * 224, y = 34 + r() * 132, k = r();
+      g += '<circle class="pt ' + (k < .7 ? 'f-b' : k < .9 ? 'f-a' : 'f-i') + '" opacity="' + (k < .7 ? '.45' : '.8') + '" cx="' + f(x) + '" cy="' + f(y) + '" r="' + (k < .7 ? 4.5 : 3.4) + '"/>'; }
+    g += '<rect class="c-a" fill-opacity=".08" stroke-width="2" x="150" y="66" width="86" height="58" rx="3"/>';
+    g += '<line stroke="var(--ink)" stroke-width="2" x1="48" y1="168" x2="98" y2="168"/><line stroke="var(--ink)" stroke-width="2" x1="48" y1="164" x2="48" y2="172"/><line stroke="var(--ink)" stroke-width="2" x1="98" y1="164" x2="98" y2="172"/>';
   } else if(tipo === 'video'){
     g += '<circle class="ring" cx="160" cy="100" r="48"/><circle class="ring" cx="160" cy="100" r="68"/>';
     g += '<rect class="s-i" x="120" y="14" width="80" height="172" rx="12"/>';
@@ -631,7 +708,7 @@ function renderPortafolio(){
       h('p', {class:'cdesc'}, p.desc),
       h('div', {class:'acts'},
         h('button', {class:'lk', type:'button', onclick:ver}, 'Ver detalles'),
-        p.url && h('a', {class:'lk', href:p.url, target:'_blank', rel:'noopener'}, 'Abrir proyecto', h('span', {class:'sr'}, ' (se abre en una pestaña nueva)'))));
+        p.url && h('a', {class:'lk', href:p.url, target:'_blank', rel:'noopener'}, p.etiqueta || 'Abrir proyecto', h('span', {class:'sr'}, ' (se abre en una pestaña nueva)'))));
     li.querySelector('.thumb').innerHTML = miniatura(p.motivo);
     grid.append(li);
   });
@@ -665,14 +742,14 @@ function renderPortafolio(){
 
   function abrir(p, disparador){
     retorno = disparador;
-    const enlaces = [...(p.url ? [['Abrir proyecto', p.url]] : []), ...(p.extra || [])];
+    const enlaces = [...(p.url ? [[p.etiqueta || 'Abrir proyecto', p.url]] : []), ...(p.extra || [])];
     const inn = $('#dlg-in'); inn.textContent = '';
     const th = h('div', {class:'thumb'}); th.innerHTML = miniatura(p.motivo);
     inn.append(
       h('button', {class:'x', type:'button', 'aria-label':'Cerrar detalles', onclick:cerrar}), th,
       h('p', {class:'ccat'}, nom(p)), h('h3', {id:'dlg-t'}, p.nombre), h('p', null, p.detalle),
       h('div', {class:'chips'}, p.techs.map(x => h('span', {class:'tag'}, x))),
-      enlaces.length && h('div', {class:'acts'}, enlaces.map(([x, u]) => h('a', {class:'lk', href:u, target:'_blank', rel:'noopener'}, x, h('span', {class:'sr'}, ' (se abre en una pestaña nueva)')))));
+      ...(enlaces.length ? [h('div', {class:'acts'}, enlaces.map(([x, u]) => h('a', {class:'lk', href:u, target:'_blank', rel:'noopener'}, x, h('span', {class:'sr'}, ' (se abre en una pestaña nueva)'))))] : []));
     dlg.showModal();
   }
   function cerrar(){
